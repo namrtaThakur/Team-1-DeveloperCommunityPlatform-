@@ -111,10 +111,43 @@ function updatePost(req, res) {
     return res.json(post);
 }
 
+function deletePost(req, res) {
+
+    const id = Number(req.params.id);
+
+    const index = posts.findIndex(function (currentPost) {
+
+        return currentPost.id === id;
+
+    });
+
+    if (index === -1) {
+
+        return res.status(404).json({
+
+            message: "Post not found"
+
+        });
+
+    }
+
+    const deletedPost = posts.splice(index, 1);
+
+    return res.status(200).json({
+
+        message: "Post deleted successfully",
+
+        deletedPost: deletedPost[0]
+
+    });
+
+}
+
 module.exports = {
 
     getAllPosts,
     getPostById,
     createPost,
-    updatePost
+    updatePost,
+    deletePost
 };
