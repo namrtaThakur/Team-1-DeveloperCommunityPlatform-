@@ -1,150 +1,127 @@
-const posts = [
+const Post = require("../models/Post");
 
-        {
-            id: 1,
-            title: "Understanding Express Router",
-            author: "Rudra",
-            tags: ["Node", "Express"],
-            likes: 45,
-            commentCount: 12
-        },
+/**
+ * GET /posts
+ */
+const getAllPosts = async (req, res) => {
+    try {
+        const author = req.query.author;
 
-        {
-            id: 2,
-            title: "Building Responsive UI",
-            author: "Namrata",
-            tags: ["Next.js", "React"],
-            likes: 31,
-            commentCount: 8
-        },
+        const query = author ? { author } : {};
 
-        {
-            id: 3,
-            title: "MongoDB Basics",
-            author: "Misthi",
-            tags: ["MongoDB"],
-            likes: 19,
-            commentCount: 5
+        const posts = await Post.find(query);
+
+        return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to fetch posts",
+            error: error.message
+        });
+    }
+};
+
+/**
+ * GET /posts/:id
+ */
+const getPostById = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const post = await Post.findById(id);
+
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
         }
 
-    ];
-function getAllPosts(req, res) {
-    const author = req.query.author;
-    if (author === undefined) {
-
-    return res.json(posts);
-    }
-    const filteredPosts = posts.filter(function (currentPost) {
-
-    return currentPost.author === author;
-
-});
-
-res.json(filteredPosts);
-
-}
-function getPostById(req, res) {
-
-    const id = Number(req.params.id);
-
-    const post = posts.find(function (currentPost) {
-
-        return currentPost.id === id;
-
-    });
-
-    if (post === undefined) {
-
-        return res.status(404).json({
-
-            message: "Post not found"
-
-        });
-
-    }
-
-    res.json(post);
-
-}
-
-function createPost(req, res) {
-
-    const newPost = {
-
-        id: posts.length + 1,
-
-        title: req.body.title,
-
-        author: req.body.author,
-
-        tags: req.body.tags,
-
-        likes: 0,
-
-        commentCount: 0
-
-    };
-
-    posts.push(newPost);
-
-    return res.status(201).json(newPost);
-}
-
-function updatePost(req, res) {
-
-    const id = Number(req.params.id);
-
-    const post = posts.find(function (currentPost) {
-        return currentPost.id === id;
-    });
-
-    if (post === undefined) {
-        return res.status(404).json({
-            message: "Post not found"
+        return res.status(200).json(post);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error fetching post",
+            error: error.message
         });
     }
+};
 
-    post.title = req.body.title;
-    post.author = req.body.author;
-    post.tags = req.body.tags;
-
-    return res.json(post);
-}
-
-function deletePost(req, res) {
-
-    const id = Number(req.params.id);
-
-    const index = posts.findIndex(function (currentPost) {
-
-        return currentPost.id === id;
-
-    });
-
-    if (index === -1) {
-
-        return res.status(404).json({
-
-            message: "Post not found"
-
+/**
+ * POST /posts
+ */
+const createPost = async (req, res) => {
+    try {
+        const newPost = await Post.create({
+            title: req.body.title,
+            author: req.body.author,
+            tags: req.body.tags,
+            likes: 0,
+            commentCount: 0
         });
 
+        return res.status(201).json(newPost);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error creating post",
+            error: error.message
+        });
     }
+};
 
-    const deletedPost = posts.splice(index, 1);
+/**
+ * PUT /posts/:id
+ */
+const updatePost = async (req, res) => {
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.id,
+            {
+                title: req.body.title,
+                author: req.body.author,
+                tags: req.body.tags
+            },
+            { new: true }
+        );
 
-    return res.status(200).json({
+        if (!updatedPost) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
 
-        message: "Post deleted successfully",
+        return res.status(200).json(updatedPost);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error updating post",
+            error: error.message
+        });
+    }
+};
 
-        deletedPost: deletedPost[0]
+/**
+ * DELETE /posts/:id
+ */
+const deletePost = async (req, res) => {
+    try {
+        const deletedPost = await Post.findByIdAndDelete(req.params.id);
 
-    });
+        if (!deletedPost) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
 
-}
+        return res.status(200).json({
+            message: "Post deleted successfully",
+            deletedPost
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error deleting post",
+            error: error.message
+        });
+    }
+};
 
 module.exports = {
-
     getAllPosts,
     getPostById,
     createPost,
