@@ -28,7 +28,9 @@ const updatePost = async (id, postData) => {
             author: postData.author,
             tags: postData.tags
         },
-        { new: true }
+        { new: true,
+          runValidators: true  
+        }
     );
 };
 
