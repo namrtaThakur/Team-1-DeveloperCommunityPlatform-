@@ -1,45 +1,29 @@
 import Link from "next/link";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "20px 40px",
-        borderBottom: "1px solid #ddd",
-        backgroundColor: "#fff",
-      }}
-    >
+    <nav className={styles.navbar}>
+   
       <Link
-        href="/"
-        style={{
-          textDecoration: "none",
-          color: "black",
-        }}
-      >
-        <h1 style={{ margin: 0 }}>DevConnect</h1>
+       href="/"
+       className={styles.logoLink}
+  >
+        <h1 className={ styles.log}>DevConnect</h1>
       </Link>
 
-      <div style={{ display: "flex", gap: "20px" }}>
+      <div className={styles.navLinks}>
         <Link
-          href="/"
-          style={{
-            textDecoration: "none",
-            color: "black",
-          }}
-        >
+       href="/"
+       className={styles.link}
+  >
           Home
         </Link>
 
         <Link
-          href="/create"
-          style={{
-            textDecoration: "none",
-            color: "black",
-          }}
-        >
+        href="/create"
+       className={styles.link}
+  >
           Create Post
         </Link>
       </div>
