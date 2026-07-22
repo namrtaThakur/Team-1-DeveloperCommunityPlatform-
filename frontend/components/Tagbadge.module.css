@@ -1,0 +1,22 @@
+.badge {
+  display: inline-block;
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  background-color: #2563eb;
+  color: white;
+}
+
+.link {
+  text-decoration: none;
+}

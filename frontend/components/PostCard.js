@@ -1,5 +1,6 @@
 import Link from "next/link";
 import TagBadge from "./TagBadge";
+import styles from "./PostCard.module.css";
 
 export default function PostCard({
   id,
@@ -10,38 +11,21 @@ export default function PostCard({
   commentCount,
 }) {
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        padding: "20px",
-        marginBottom: "20px",
-        backgroundColor: "#fff",
-        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.08)",
-      }}
-    >
+    <div className={styles.card} >
       <Link
         href={`/post/${id}`}
-        style={{
-          textDecoration: "none",
-          color: "black",
-        }}
+        className = {styles.titleLink}
       >
-        <h2
-          style={{
-            marginTop: 0,
-            cursor: "pointer",
-          }}
-        >
+        <h2 className = {styles.title}>
           {title}
         </h2>
       </Link>
 
-      <p style={{ color: "#666" }}>
+      <p className = {styles.author}>
         <strong>Author:</strong> {author}
       </p>
 
-      <div style={{ margin: "15px 0" }}>
+      <div className = {styles.tags}>
         {tags.map((tag) => (
           <TagBadge
             key={tag}
@@ -50,14 +34,7 @@ export default function PostCard({
         ))}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          marginTop: "15px",
-          color: "#555",
-        }}
-      >
+      <div className = {styles.footer}>
         <span> {likes} Likes</span>
 
         <span> {commentCount} Comments</span>
