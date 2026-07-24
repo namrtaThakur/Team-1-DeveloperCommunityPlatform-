@@ -1,22 +1,50 @@
+.link {
+  text-decoration: none;
+}
+
 .badge {
-  display: inline-block;
-  background-color: #e5e7eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  background: #f3f4f6;
   color: #374151;
-  padding: 6px 12px;
-  border-radius: 20px;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  cursor: pointer;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .badge:hover {
-  background-color: #2563eb;
+  background: #2563eb;
   color: white;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
 }
 
-.link {
-  text-decoration: none;
+.badge:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 768px) {
+  .badge {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
 }

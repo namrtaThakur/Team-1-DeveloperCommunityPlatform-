@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import PostCard from "../components/PostCard";
+import styles from "./home.module.css";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -24,30 +25,56 @@ export default function Home() {
       }
     }
 
-    // Replace localhost URL with deployed backend URL in future
+    
     fetchPosts();
   }, []);
 
-  return (
+    return (
     <Layout>
-      <h1>Developer Community</h1>
+      <section className={styles.hero}>
+        <h1 className={styles.title}>
+          Welcome to DevConnect
+        </h1>
+
+        <p className={styles.subtitle}>
+          Discover insightful articles, share your knowledge,
+          and connect with developers from around the world.
+        </p>
+      </section>
 
       {loading ? (
-        <p>Loading posts...</p>
+        <div className={styles.loadingCard}>
+          <h2>Loading posts...</h2>
+          <p>Please wait while we fetch the latest articles.</p>
+        </div>
       ) : posts.length === 0 ? (
-        <p>No posts available.</p>
+        <div className={styles.emptyCard}>
+          <h2>No Posts Yet</h2>
+          <p>
+            Be the first to share something with the community.
+          </p>
+        </div>
       ) : (
-        posts.map((post) => (
-          <PostCard
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            author={post.author}
-            tags={post.tags}
-            likes={post.likes}
-            commentCount={post.commentCount}
-          />
-        ))
+        <section className={styles.posts}>
+          {posts.map((post) => (
+            <PostCard
+              key={post._id || post.id}
+              id={post._id || post.id}
+              title={post.title}
+              author={post.author?.name || post.author}
+              content={post.content}
+              tags={post.tags}
+              likes={post.likes}
+              commentCount={
+                post.commentsCount ??
+                post.commentCount ??
+                0
+              }
+              coverImage={post.coverImage}
+              createdAt={post.createdAt}
+            />
+          ))}
+        </section>
       )}
     </Layout>
   );

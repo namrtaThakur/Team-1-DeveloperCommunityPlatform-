@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./PostForm.module.css";
 
 export default function PostForm() {
   const [title, setTitle] = useState("");
@@ -19,7 +20,7 @@ export default function PostForm() {
 
     const newPost = {
       title: title.trim(),
-      author: "Namrata", // Replace with logged-in user later
+      author: "Namrta", // Replace with logged-in user later
       tags: tags
         .split(",")
         .map((tag) => tag.trim())
@@ -60,11 +61,12 @@ export default function PostForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title</label>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.formGroup}>
+        <label className = {styles.label}>Title</label>
         <br />
         <input
+        className={styles.input}
           type="text"
           placeholder="Enter title"
           value={title}
@@ -74,10 +76,11 @@ export default function PostForm() {
 
       <br />
 
-      <div>
-        <label>Content</label>
+      <div className = {styles.formGroup}>
+        <label className = {styles.label}>Content</label>
         <br />
         <textarea
+        className = {styles.textarea}
           rows="6"
           placeholder="Write your article..."
           value={content}
@@ -87,10 +90,11 @@ export default function PostForm() {
 
       <br />
 
-      <div>
-        <label>Tags</label>
+      <div className = {styles.formGroup}>
+        <label className = {styles.label}>Tags</label>
         <br />
         <input
+        className ={styles.input}
           type="text"
           placeholder="React, JavaScript"
           value={tags}
@@ -100,10 +104,11 @@ export default function PostForm() {
 
       <br />
 
-      <div>
-        <label>Cover Image URL</label>
+      <div className = {styles.formGroup}>
+        <label className = {styles.label}>Cover Image URL</label>
         <br />
         <input
+        className = {styles.input}
           type="text"
           placeholder="https://example.com/image.jpg"
           value={coverImage}
@@ -113,7 +118,7 @@ export default function PostForm() {
 
       <br />
 
-      <button type="submit">
+      <button className={styles.button} type="submit">
         Publish Post
       </button>
     </form>
