@@ -1,0 +1,89 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 45px;
+  padding: 35px 20px;
+}
+
+.title {
+  font-size: 3rem;
+  color: #111827;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+
+.count {
+  display: inline-block;
+  padding: 8px 18px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.emptyCard {
+  background: white;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.emptyCard h2 {
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+.emptyCard p {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 25px 10px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .emptyCard {
+    padding: 35px 20px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

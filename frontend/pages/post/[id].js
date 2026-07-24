@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import TagBadge from "../../components/TagBadge";
 import CommentCard from "../../components/CommentCard";
+import styles from "./post.module.css";
 
 export default function PostPage() {
   const router = useRouter();
@@ -17,17 +18,20 @@ export default function PostPage() {
   useEffect(() => {
     if (!id) return;
 
-    //  Replace with GET /posts/:id when backend is integrated
+    //replace with GET:id
 
     const samplePost = {
       id,
       title: "React Basics",
-      author: "Namrata",
+      author: "Namrta",
       content:
         "React is a JavaScript library used for building user interfaces. It helps developers create reusable UI components and build modern web applications.",
       tags: ["React", "JavaScript"],
       likes: 10,
       commentCount: 2,
+       coverImage:
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200",
+      createdAt: "2026-07-24T10:30:00Z",
     };
 
     //  Replace with GET /comments when backend is available
@@ -59,6 +63,15 @@ export default function PostPage() {
     }
 
     //  POST comment to backend
+    const newComment = {
+      id: comments.length + 1,
+      username,
+      text: commentText,
+      createdAt: "Just now",
+    };
+
+    setComments([newComment, ...comments]);
+
 
     alert("Comment submitted successfully!");
 
@@ -69,76 +82,105 @@ export default function PostPage() {
   if (!post) {
     return (
       <Layout>
-        <p>Loading post...</p>
+        <div className={styles.loading}>
+          <h2>Loading article...</h2>
+        </div>
       </Layout>
     );
   }
 
-  return (
+   return (
     <Layout>
-      <h1>{post.title}</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>{post.title}</h1>
 
-      <p>
-        <strong>Author:</strong> {post.author}
-      </p>
-
-      <p> {post.likes} Likes</p>
-
-      <div style={{ marginBottom: "20px" }}>
-        {post.tags.map((tag) => (
-          <TagBadge key={tag} tag={tag} />
-        ))}
-      </div>
-
-      {/* Backend currently doesn't return content */}
-      {post.content && <p>{post.content}</p>}
-
-      <hr />
-
-      <h2>Comments ({comments.length})</h2>
-
-      {comments.length === 0 ? (
-        <p>No comments yet.</p>
-      ) : (
-        comments.map((comment) => (
-          <CommentCard
-            key={comment.id}
-            username={comment.username}
-            text={comment.text}
-            createdAt={comment.createdAt}
+        {post.coverImage && (
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className={styles.coverImage}
           />
-        ))
-      )}
+        )}
 
-      <hr />
+        <div className={styles.meta}>
+          <span>
+            By <strong>{post.author}</strong>
+          </span>
 
-      <h3>Add a Comment</h3>
+          <span>
+            {new Date(post.createdAt).toLocaleDateString()}
+          </span>
 
-      <form onSubmit={handleCommentSubmit}>
-        <input
-          type="text"
-          placeholder="Your Name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+          <span> {post.likes} Likes</span>
 
-        <br />
-        <br />
+          <span> {comments.length} Comments</span>
+        </div>
 
-        <textarea
-          rows="4"
-          placeholder="Write your comment..."
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-        />
+        <div className={styles.tags}>
+          {post.tags.map((tag) => (
+            <TagBadge key={tag} tag={tag} />
+          ))}
+        </div>
 
-        <br />
-        <br />
+        <article className={styles.article}>
+          {post.content}
+        </article>
 
-        <button type="submit">
-          Submit Comment
-        </button>
-      </form>
+        <section className={styles.commentsSection}>
+          <h2 className={styles.sectionTitle}>
+            Comments ({comments.length})
+          </h2>
+
+          {comments.length === 0 ? (
+            <p className={styles.noComments}>
+              No comments yet.
+            </p>
+          ) : (
+            comments.map((comment) => (
+              <CommentCard
+                key={comment.id}
+                username={comment.username}
+                text={comment.text}
+                createdAt={comment.createdAt}
+              />
+            ))
+          )}
+        </section>
+
+        <section className={styles.commentBox}>
+          <h2 className={styles.sectionTitle}>
+            Leave a Comment
+          </h2>
+
+          <form
+            className={styles.commentForm}
+            onSubmit={handleCommentSubmit}
+          >
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="Your Name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+
+            <textarea
+              className={styles.textarea}
+              rows="5"
+              placeholder="Write your thoughts..."
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+
+            <button
+              className={styles.button}
+              type="submit"
+            >
+              Publish Comment
+            </button>
+          </form>
+        </section>
+      </div>
     </Layout>
   );
 }

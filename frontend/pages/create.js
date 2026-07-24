@@ -1,23 +1,26 @@
 import Layout from "../components/Layout";
 import PostForm from "../components/PostForm";
+import styles from ".create.module.css";
 
 export default function Create() {
   return (
     <Layout>
-      <div
-        style={{
-          padding: "20px",
-        }}
-      >
-        <h1>Create New Post</h1>
+      <div className={styles.container}>
+        <section className={styles.hero}>
+          <h1 className={styles.title}>
+            Create a New Post
+          </h1>
 
-        <p>
-          Share your knowledge with the developer community.
-        </p>
+          <p className={styles.subtitle}>
+            Share your ideas, tutorials, projects, and experiences with the
+            developer community. Your knowledge could help thousands of fellow
+            developers learn something new.
+          </p>
+        </section>
 
-        <PostForm />
-
-        {/* Redirect user after successful post creation */}
+        <div className={styles.formContainer}>
+          <PostForm />
+        </div>
       </div>
     </Layout>
   );

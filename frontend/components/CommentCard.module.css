@@ -1,0 +1,71 @@
+.commentCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: all 0.25s ease;
+}
+
+.commentCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.username {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.time {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.comment {
+  margin: 0;
+  color: #374151;
+  line-height: 1.8;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .commentCard {
+    padding: 16px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  .comment {
+    font-size: 14px;
+  }
+}
