@@ -1,11 +1,19 @@
 const express = require("express");
-
 const router = express.Router();
 
-function getAllUsers(req, res) {
-    res.send("All Developers");
-}
+const validateUserMiddleware = require("../middlewares/validateUserMiddleware");
 
-router.get("/users", getAllUsers);
+const {
+    register,
+    login,
+} = require("../controllers/userController");
+
+router.post(
+    "/register",
+    validateUserMiddleware,
+    register
+);
+
+router.post("/login", login);
 
 module.exports = router;

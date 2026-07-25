@@ -1,0 +1,11 @@
+require("dotenv").config();
+const mongoose = require("mongoose");
+const connectDB = require("../src/config/database");
+
+beforeAll(async () => {
+    await connectDB();
+});
+
+afterAll(async () => {
+    await mongoose.connection.close();
+});
