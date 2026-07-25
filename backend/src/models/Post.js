@@ -57,6 +57,7 @@ const PostSchema = new mongoose.Schema(
   }
 );
 
+PostSchema.index({ title: "text", content: "text" });
 PostSchema.index({ createdAt: -1 });
 PostSchema.index({ tags: 1 });
 PostSchema.index({ author: 1 });

@@ -1,21 +1,53 @@
 function validatePostMiddleware(req, res, next) {
-    const { title, content, tags } = req.body;
+    const { title, content, tags, status } = req.body;
 
-    if (!title) {
-        return res.status(400).json({
-            message: "Title is required"
-        });
+    const errors = [];
+
+    // Title validation
+    if (
+        !title ||
+        typeof title !== "string" ||
+        title.trim().length < 3 ||
+        title.trim().length > 200
+    ) {
+        errors.push(
+            "Title must be between 3 and 200 characters."
+        );
     }
 
-    if (!content) {
-        return res.status(400).json({
-            message: "Content is required"
-        });
+    // Content validation
+    if (
+        !content ||
+        typeof content !== "string" ||
+        content.trim().length < 10
+    ) {
+        errors.push(
+            "Content must be at least 10 characters long."
+        );
     }
 
-    if (!Array.isArray(tags)) {
+    // Tags validation
+    if (!Array.isArray(tags) || tags.length === 0) {
+        errors.push(
+            "Tags must be a non-empty array."
+        );
+    }
+
+    // Status validation (optional field)
+    if (
+        status &&
+        !["draft", "published"].includes(status)
+    ) {
+        errors.push(
+            "Status must be either 'draft' or 'published'."
+        );
+    }
+
+    if (errors.length > 0) {
         return res.status(400).json({
-            message: "Tags must be an array"
+            success: false,
+            message: "Validation failed",
+            errors,
         });
     }
 
