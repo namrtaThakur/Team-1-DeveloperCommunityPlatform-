@@ -23,12 +23,58 @@
   font-size: 18px;
   line-height: 1.8;
 }
+.errorCard {
+  background: white;
+  border-radius: 16px;
+  padding: 35px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.errorCard h2 {
+  color: #dc2626;
+  margin-bottom: 12px;
+}
 
 .posts {
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.pageButton {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.pageButton:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-weight: 600;
+  color: #475569;
+}
+
 
 .loadingCard,
 .emptyCard {

@@ -1,12 +1,22 @@
 .container {
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
   animation: fadeIn 0.4s ease;
 }
 
-.loading {
+.loading,
+.errorCard {
   text-align: center;
   padding: 80px 20px;
+}
+
+.errorCard h2 {
+  color: #dc2626;
+  margin-bottom: 10px;
+}
+
+.errorCard p {
+  color: #6b7280;
 }
 
 .title {
@@ -49,19 +59,23 @@
   white-space: pre-line;
 }
 
+.commentsSection{
+  margin-top: 60px;
+}
+
 .sectionTitle {
   font-size: 1.8rem;
   margin-bottom: 22px;
   color: #111827;
 }
 
-.commentsSection {
-  margin-top: 60px;
-}
+
 
 .noComments {
   color: #6b7280;
   font-style: italic;
+  text-align: centre;
+  padding: 20px 0;
 }
 
 .commentBox {
@@ -120,16 +134,27 @@
   transition: all 0.25s ease;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   background: #1d4ed8;
   transform: translateY(-2px);
 }
 
-.button:active {
+.button:active:not(:disabled) {
   transform: scale(0.98);
 }
 
+.button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
 @media (max-width: 768px) {
+
+  .container{
+    padding: 0 15px;
+  }
+  
   .title {
     font-size: 2.2rem;
   }

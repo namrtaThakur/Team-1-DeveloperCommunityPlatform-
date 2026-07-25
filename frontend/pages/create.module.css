@@ -1,6 +1,7 @@
 .container {
   max-width: 900px;
   margin: 0 auto;
+  padding: 20px;
   animation: fadeIn 0.4s ease;
 }
 
@@ -35,7 +36,11 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 15px;
+    padding:  15px;
+  }
+
+  .hero{
+    margin-bottom: 30px;
   }
 
   .title {
@@ -43,11 +48,12 @@
   }
 
   .subtitle {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .formContainer {
     padding: 20px;
+    border-radius: 16px;
   }
 }
 

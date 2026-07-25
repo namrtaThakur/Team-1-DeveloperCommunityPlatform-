@@ -6,57 +6,87 @@ export default function PostForm() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [status, setStatus] = useState("published");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !content.trim()) {
-      alert("Please enter both a title and content.");
+     if (!title.trim()) {
+      alert("Please enter a title.");
       return;
     }
 
-    
-    // add content and coverImage once backend supports them
+    if (!content.trim()) {
+      alert("Please enter some content.");
+      return;
+    }
+
+    const tagsArray = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "");
+
+    if (tagsArray.length === 0) {
+      alert("Please enter at least one tag.");
+      return;
+    }
+
+      const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first.");
+      return;
+    }
 
     const newPost = {
       title: title.trim(),
-      author: "Namrta", // Replace with logged-in user later
-      tags: tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag !== ""),
+      content: content.trim(), 
+      tags: tagsArray,
+        status,
+        coverImage: coverImage.trim(),
     };
 
     try {
+
+      setIsSubmitting(true);
       const response = await fetch("http://localhost:5000/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newPost),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to publish post");
-      }
-
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.errors?.join("\n") ||
+            data.message ||
+            "Failed to publish post.");
+      }
 
       console.log("Created Post:", data);
 
       alert("Post published successfully!");
 
-      // Clear form
+      
       setTitle("");
       setContent("");
       setTags("");
       setCoverImage("");
+      setStatus("published");
     } catch (error) {
       console.error(error);
 
       alert(
-        "Could not connect to the backend. Make sure the backend server is running."
+        error.message
       );
+    }
+    finally{
+      setIsSubmitting(false);
     }
   };
 
@@ -81,7 +111,7 @@ export default function PostForm() {
         <br />
         <textarea
         className = {styles.textarea}
-          rows="6"
+          rows="8"
           placeholder="Write your article..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -100,13 +130,43 @@ export default function PostForm() {
           value={tags}
           onChange={(e) => setTags(e.target.value)}
         />
+         <small className={styles.helperText}>
+          Separate multiple tags using commas.
+        </small>
       </div>
 
       <br />
 
       <div className = {styles.formGroup}>
-        <label className = {styles.label}>Cover Image URL</label>
+        <label className = {styles.label}>Status</label>
         <br />
+
+        <select
+          className={styles.input}
+          value={status}
+          onChange={(e) =>
+            setStatus(e.target.value)
+          }
+        >
+          <option value="published">
+            Published
+          </option>
+
+          <option value="draft">
+            Draft
+          </option>
+        </select>
+      </div>
+
+      <br />
+
+      <div className={styles.formGroup}>
+        <label className={styles.label}>
+          Cover Image URL
+        </label>
+
+        <br />
+
         <input
         className = {styles.input}
           type="text"
@@ -114,12 +174,19 @@ export default function PostForm() {
           value={coverImage}
           onChange={(e) => setCoverImage(e.target.value)}
         />
+
+        <small className={styles.helperText}>
+          Optional. This will be used once image support is available.
+        </small>
       </div>
 
       <br />
 
-      <button className={styles.button} type="submit">
-        Publish Post
+      <button className={styles.button}
+       type="submit"
+       disabled={isSubmitting}
+       >
+        {isSubmitting ? "Publishing..." : "Publish Postss"}
       </button>
     </form>
   );

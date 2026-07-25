@@ -1,6 +1,7 @@
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
+  paddin: 20px;
   animation: fadeIn 0.4s ease;
 }
 
@@ -39,8 +40,10 @@
   gap: 28px;
 }
 
+.loadingCard,
+.errorCard,
 .emptyCard {
-  background: white;
+  background: #ffffff;
   border-radius: 18px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
@@ -48,17 +51,38 @@
   padding: 60px 40px;
 }
 
+.loadingCard h2,
+.errorCard h2,
 .emptyCard h2 {
-  color: #111827;
   margin-bottom: 14px;
+  color: #111827;
 }
 
+.loadingCard p,
+.errorCard p,
 .emptyCard p {
   color: #6b7280;
   font-size: 16px;
+  line-height: 1.7;
+}
+
+.errorCard {
+  border-left: 5px solid #ef4444;
+}
+
+.loadingCard {
+  border-left: 5px solid #2563eb;
+}
+
+.emptyCard {
+  border-left: 5px solid #9ca3af;
 }
 
 @media (max-width: 768px) {
+  .container{
+    padding: 25px 10px;
+  }
+
   .hero {
     padding: 25px 10px;
   }
@@ -70,10 +94,12 @@
   .subtitle {
     font-size: 16px;
   }
-
+ .loadingCard,
+  .errorCard,
   .emptyCard {
     padding: 35px 20px;
   }
+  
 }
 
 @keyframes fadeIn {

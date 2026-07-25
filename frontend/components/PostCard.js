@@ -16,20 +16,28 @@ export default function PostCard({
   const likesCount = Array.isArray(likes) ? likes.length : likes || 0;
 
   const preview =
-    content && content.length > 140
-      ? content.substring(0, 140) + "..."
+    content && content.length > 180
+      ? content.substring(0, 180) + "..."
       : content;
+
+      const formattedDate = createdAt
+    ? new Date(createdAt).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
+
   return (
 
     <article className={styles.card}>
 
-      {coverImage && (
         <img
-          src={coverImage}
+          src={coverImage ||  "https://placehold.co/1200x500/e5e7eb/6b7280?text=DevConnect" }
           alt={title}
           className={styles.coverImage}
         />
-      )}
+      
     <div className={styles.content} >
       <Link
         href={`/post/${id}`}
@@ -40,20 +48,17 @@ export default function PostCard({
         </h2>
       </Link>
        <div className={styles.meta}>
-          <span>
-            By <strong>{author || "Anonymous"}</strong>
-          </span>
+           <span>👤 {author || "Anonymous"}</span>
 
-          {createdAt && (
-            <span>
-              • {new Date(createdAt).toLocaleDateString()}
-            </span>
+          {formattedDate && (
+            <span>🕒 {formattedDate}</span>
           )}
         </div>
 
       
-      {preview &&(<p className = {styles.author}>
-        <strong>Author:</strong> {author}
+      {preview &&(<p className = {styles.preview}>
+        {preview}
+
       </p>
       )}
 
@@ -69,9 +74,9 @@ export default function PostCard({
       <div className = {styles.footer}>
 
         <div className = {styles.stats}>
-        <span> {likes} Likes</span>
+        <span> {likes} ❤️Likes</span>
 
-        <span> {commentCount} Comments</span>
+        <span> {commentCount}💬 Comments</span>
       </div>
        <Link
             href={`/post/${id}`}

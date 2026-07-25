@@ -6,28 +6,43 @@ import styles from "./home.module.css";
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+ const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    async function fetchPosts() {
+
+    fetchPosts(currentPage);
+  }, [currentPage]);
+
+    async function fetchPosts(page = 1) {
       try {
-        const response = await fetch("http://localhost:5000/posts");
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+           `http://localhost:5000/posts?page=${page}&limit=10`
+        );
+
+        const result = await response.json();
 
         if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          throw new Error(result.message || "Failed to fetch posts");
         }
 
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
+      setPosts(result.data.posts);
+      setCurrentPage(result.data.currentPage);
+      setTotalPages(result.data.totalPages);
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    
-    fetchPosts();
-  }, []);
+
+       
 
     return (
     <Layout>
@@ -47,7 +62,14 @@ export default function Home() {
           <h2>Loading posts...</h2>
           <p>Please wait while we fetch the latest articles.</p>
         </div>
-      ) : posts.length === 0 ? (
+
+      ) : error ? (
+        <div className={styles.errorCard}>
+          <h2>Something went wrong</h2>
+          <p>{error}</p>
+        </div>
+        
+      ): posts.length === 0 ? (
         <div className={styles.emptyCard}>
           <h2>No Posts Yet</h2>
           <p>
@@ -55,26 +77,48 @@ export default function Home() {
           </p>
         </div>
       ) : (
+        <>
         <section className={styles.posts}>
           {posts.map((post) => (
             <PostCard
-              key={post._id || post.id}
-              id={post._id || post.id}
+              key={post._id }
+              id={post._id }
               title={post.title}
-              author={post.author?.name || post.author}
+              author={post.author?.username || "Unknown"}
               content={post.content}
-              tags={post.tags}
-              likes={post.likes}
-              commentCount={
-                post.commentsCount ??
-                post.commentCount ??
-                0
-              }
+              tags={post.tags || []}
+              likes={post.likes?.length || 0}
+              commentCount={post.commentsCount || 0}
               coverImage={post.coverImage}
               createdAt={post.createdAt}
             />
           ))}
+
         </section>
+         <div className={styles.pagination}>
+            <button
+              className={styles.pageButton}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              ← Previous
+            </button>
+
+            <span className={styles.pageInfo}>
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              className={styles.pageButton}
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Next →
+            </button>
+          </div>
+        </>
+        
+
       )}
     </Layout>
   );

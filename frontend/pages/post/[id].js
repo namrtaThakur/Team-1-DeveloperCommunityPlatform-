@@ -12,74 +12,119 @@ export default function PostPage() {
 
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const [username, setUsername] = useState("");
+   const [loading, setLoading] = useState(true);
+  const [commentLoading, setCommentLoading] = useState(false);
+
+  const [error, setError] = useState("");
+
   const [commentText, setCommentText] = useState("");
+
 
   useEffect(() => {
     if (!id) return;
 
-    //replace with GET:id
-
-    const samplePost = {
-      id,
-      title: "React Basics",
-      author: "Namrta",
-      content:
-        "React is a JavaScript library used for building user interfaces. It helps developers create reusable UI components and build modern web applications.",
-      tags: ["React", "JavaScript"],
-      likes: 10,
-      commentCount: 2,
-       coverImage:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200",
-      createdAt: "2026-07-24T10:30:00Z",
-    };
-
-    //  Replace with GET /comments when backend is available
-    const sampleComments = [
-      {
-        id: 1,
-        username: "John",
-        text: "Great article!",
-        createdAt: "2 hours ago",
-      },
-      {
-        id: 2,
-        username: "Sarah",
-        text: "Very helpful!",
-        createdAt: "5 minutes ago",
-      },
-    ];
-
-    setPost(samplePost);
-    setComments(sampleComments);
+    fetchPost();
+    fetchComments();
   }, [id]);
+    
+  async function fetchPost() {
+    try {
+      setLoading(true);
+      setError("");
+      const response = await fetch(
+        `http://localhost:5000/posts/${id}`
+      );
 
-  const handleCommentSubmit = (e) => {
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to fetch post.");
+      }
+
+      setPost(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchComments() {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/posts/${id}/comments`
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Failed to fetch comments."
+        );
+      }
+
+        setComments(result.data);
+      }
+     catch (err) {
+      console.error(err);
+    }
+  }
+
+ 
+
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username.trim() || !commentText.trim()) {
-      alert("Please fill in all fields.");
+    if (!commentText.trim()) {
+      alert("Please enter a commemt");
       return;
     }
 
-    //  POST comment to backend
-    const newComment = {
-      id: comments.length + 1,
-      username,
-      text: commentText,
-      createdAt: "Just now",
-    };
+    const token = localStorage.getItem("token");
 
-    setComments([newComment, ...comments]);
+    if (!token) {
+        alert("Please login first.");
+        return;
+      }
 
+     try {
+      setCommentLoading(true);
 
-    alert("Comment submitted successfully!");
+      
 
-    setUsername("");
-    setCommentText("");
+      
+
+      const response = await fetch(
+        `http://localhost:5000/posts/${id}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            content: commentText,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to post comment.");
+      }
+
+      setCommentText("");
+
+     await fetchComments();
+     await fetchPost();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setCommentLoading(false);
+    }
   };
-
-  if (!post) {
+     if (loading) {
     return (
       <Layout>
         <div className={styles.loading}>
@@ -89,10 +134,29 @@ export default function PostPage() {
     );
   }
 
+   
+
+  if (error) {
+    return (
+      <Layout>
+        <div className={styles.errorCard}>
+          <h2>Unable to load post</h2>
+          <p>{error}</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!post) {
+    return null;
+  }
+
+
    return (
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>{post.title}</h1>
+
 
         {post.coverImage && (
           <img
@@ -104,21 +168,30 @@ export default function PostPage() {
 
         <div className={styles.meta}>
           <span>
-            By <strong>{post.author}</strong>
+            By {"" }
+            <strong>
+              {post.author?.username || "Anonymous"}</strong>
           </span>
 
           <span>
             {new Date(post.createdAt).toLocaleDateString()}
           </span>
 
-          <span> {post.likes} Likes</span>
+           <span>
+            ❤️ {post.likes?.length || 0} Likes
+          </span>
 
-          <span> {comments.length} Comments</span>
+          <span>
+            💬 {post.commentsCount || 0} Comments
+          </span>
+
         </div>
 
         <div className={styles.tags}>
-          {post.tags.map((tag) => (
-            <TagBadge key={tag} tag={tag} />
+          {post.tags?.map((tag) => (
+            <TagBadge 
+            key={tag} 
+            tag={tag} />
           ))}
         </div>
 
@@ -139,9 +212,9 @@ export default function PostPage() {
             comments.map((comment) => (
               <CommentCard
                 key={comment.id}
-                username={comment.username}
-                text={comment.text}
-                createdAt={comment.createdAt}
+                username={comment.author?.username ||"Anonymous"}
+                text={comment.content}
+                createdAt={new Date(comment.createdAt).toLocaleString()}
               />
             ))
           )}
@@ -156,27 +229,25 @@ export default function PostPage() {
             className={styles.commentForm}
             onSubmit={handleCommentSubmit}
           >
-            <input
-              className={styles.input}
-              type="text"
-              placeholder="Your Name"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+           
 
             <textarea
               className={styles.textarea}
               rows="5"
               placeholder="Write your thoughts..."
               value={commentText}
+              disabled={commentLoading}
               onChange={(e) => setCommentText(e.target.value)}
             />
 
             <button
+             type = "submit"
               className={styles.button}
-              type="submit"
+              disabled={commentLoading}
             >
-              Publish Comment
+              {commentLoading
+                ? "Posting..."
+                : "Publish Comment"}
             </button>
           </form>
         </section>

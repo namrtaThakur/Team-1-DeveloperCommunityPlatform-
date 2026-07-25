@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import PostForm from "../components/PostForm";
-import styles from ".create.module.css";
+import styles from "./create.module.css";
 
 export default function Create() {
   return (
