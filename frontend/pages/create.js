@@ -1,8 +1,25 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import Layout from "../components/Layout";
 import PostForm from "../components/PostForm";
 import styles from "./create.module.css";
 
 export default function Create() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  if (typeof window !== "undefined" && !localStorage.getItem("token")) {
+    return null;
+  }
+
   return (
     <Layout>
       <div className={styles.container}>

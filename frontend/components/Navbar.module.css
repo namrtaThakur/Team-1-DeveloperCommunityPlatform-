@@ -50,7 +50,7 @@
   color: #2563eb;
 }
 
-.authButton {
+.registerButton {
   padding: 9px 18px;
   background: #2563eb;
   color: white;
@@ -61,9 +61,37 @@
               transform 0.25s ease;
 }
 
-.authButton:hover {
+.registerButton:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
+}
+
+.username {
+  color: #374151;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.logoutButton {
+  border: none;
+  background: #ef4444;
+  color: white;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease,
+              transform 0.25s ease;
+}
+
+.logoutButton:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.logoutButton:active {
+  transform: scale(0.98);
 }
 
 @media (max-width: 768px) {
