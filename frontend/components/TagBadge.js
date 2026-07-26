@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./TagBadge.module.css"
+import styles from "./Tagbadge.module.css"
 
 export default function TagBadge({ tag }) {
   return (

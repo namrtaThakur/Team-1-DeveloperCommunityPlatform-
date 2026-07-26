@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./PostForm.module.css";
+import styles from "./Postform.module.css";
 
 export default function PostForm() {
   const [title, setTitle] = useState("");

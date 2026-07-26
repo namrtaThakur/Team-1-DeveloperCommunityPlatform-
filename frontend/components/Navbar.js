@@ -8,13 +8,19 @@ export default function Navbar() {
 
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
+ useEffect(() => {
+  try {
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []);
+  } catch (error) {
+    console.error("Invalid user in localStorage:", error);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  }
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

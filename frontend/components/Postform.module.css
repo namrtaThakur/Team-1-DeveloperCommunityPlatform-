@@ -22,8 +22,7 @@
 }
 
 .input,
-.textarea,
-select {
+.textarea {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid #d1d5db;
@@ -33,10 +32,10 @@ select {
   font-size: 15px;
   line-height: 1.6;
   box-sizing: border-box;
-  appearance:none;
-  transition:   border-color 0.25s ease,
+  transition:
+    border-color 0.25s ease,
     box-shadow 0.25s ease,
-    background-color 0.25s ease;;
+    background-color 0.25s ease;
 }
 
 .input::placeholder,
@@ -45,14 +44,12 @@ select {
 }
 
 .input:hover,
-.textarea:hover,
-select:hover {
+.textarea:hover {
   border-color: #93c5fd;
 }
 
 .input:focus,
-.textarea:focus,
-select:focus{
+.textarea:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
@@ -60,15 +57,14 @@ select:focus{
 
 .input:disabled,
 .textarea:disabled,
-.button:disabled,
-select:disabled {
+.button:disabled {
   opacity: 0.7;
 }
 
 .textarea {
   resize: vertical;
   min-height: 220px;
-  max-height:500px;
+  max-height: 500px;
 }
 
 .helperText {
@@ -76,7 +72,7 @@ select:disabled {
   margin-top: 8px;
   color: #6b7280;
   font-size: 13px;
-  line-height:1.5;
+  line-height: 1.5;
 }
 
 .button {
@@ -85,11 +81,12 @@ select:disabled {
   border: none;
   border-radius: 12px;
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.25s ease,
+  transition:
+    background 0.25s ease,
     transform 0.25s ease,
     box-shadow 0.25s ease;
 }
@@ -136,15 +133,14 @@ select:disabled {
     font-size: 15px;
   }
 
-   .input,
-  .textarea,
-  select {
+  .input,
+  .textarea {
     font-size: 14px;
     padding: 12px 14px;
   }
 
   .button {
     font-size: 15px;
-    padding:14px;
+    padding: 14px;
   }
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TagBadge from "./TagBadge";
-import styles from "./PostCard.module.css";
+import styles from "./Postcard.module.css";
 
 export default function PostCard({
   id,
