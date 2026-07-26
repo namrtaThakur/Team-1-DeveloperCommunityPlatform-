@@ -186,7 +186,7 @@ export default function PostForm() {
        type="submit"
        disabled={isSubmitting}
        >
-        {isSubmitting ? "Publishing..." : "Publish Postss"}
+        {isSubmitting ? "Publishing..." : "Publish Posts"}
       </button>
     </form>
   );

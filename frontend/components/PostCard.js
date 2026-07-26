@@ -74,7 +74,7 @@ export default function PostCard({
       <div className = {styles.footer}>
 
         <div className = {styles.stats}>
-        <span> {likes} ❤️Likes</span>
+        <span> {likesCount} ❤️ Likes</span>
 
         <span> {commentCount}💬 Comments</span>
       </div>
